@@ -22,7 +22,9 @@ module.exports = {
     port: 80,
     allowOrigins: [
       'http://localhost',
-      'http://127.0.0.1'
+      'http://localhost:8080',
+      'http://127.0.0.1',
+      'https://dimigo.xyz',
     ],
   },
 };

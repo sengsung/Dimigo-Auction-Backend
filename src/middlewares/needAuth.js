@@ -11,7 +11,10 @@ module.exports = (req, res, next) => {
 
   JWT.verify(token, CONF.jwt.key, async (err, decoded) => {
     if (!err) {
-      req.auth = decoded;
+      req.auth ={
+        _id: decoded._id,
+        manager: decoded.manager,
+      };
       next();
     } else {
       res.json({ status: 401, msg: 'Token has problem' });

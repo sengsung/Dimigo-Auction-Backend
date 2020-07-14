@@ -28,21 +28,32 @@ exports.authorize = wrap(async (req, res) => {
   // 유저 타입 확인하고
   switch (identify.user_type) {
     case 'S':
-    case 'T':
-    case 'D':
-    case 'P':
+      // case 'T':
+      // case 'D':
+      // case 'P':
       break;
     default:
       res.json({ status: 403 });
       return;
   }
 
+  // 일단 학생만
+  const student = await Dimi.getStudent(identify.username);
+  if (!student) {
+    res.json({ status: 500 });
+    return;
+  }
+
   // 유저 불러와서
-  const user =
-    await User.findById(identify.id).lean() ||
-    await User.create({
+  const user = await User.findOneAndUpdate(
+    { _id: identify.id },
+    {
       _id: identify.id,
-    });
+      name: identify.name,
+      serial: student.serial,
+    },
+    { upsert: true, setDefaultsOnInsert: true, new: true },
+  );
 
   // 밴 상태인지 확인하고
   if (new Date(user.banned).getTime() > new Date().getTime()) {

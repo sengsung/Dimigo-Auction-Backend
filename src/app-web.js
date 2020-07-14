@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(helmet());
-app.use(morgan('combined'));
+app.use(morgan('tiny'));
 app.use(cors(corsOption));
 
 setRoute(app);
